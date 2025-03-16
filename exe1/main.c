@@ -32,7 +32,6 @@ int main() {
     gpio_set_irq_enabled_with_callback(BTN_PIN_R, GPIO_IRQ_EDGE_FALL, true,
                                        &btn_callback);
 
-    int time_ms = 500;
     repeating_timer_t timer_0;
     bool controle_led = false;
     
@@ -40,13 +39,11 @@ int main() {
     while (true) {
         if (flag_f_r) {
             if (!controle_led){
-                if (add_repeating_timer_ms(time_ms, timer_callback, NULL, &timer_0)){
+                if (add_repeating_timer_us(500000, timer_callback, NULL, &timer_0)){
                     controle_led = true;
-                    printf("Timer started\n");
                 };
                 
             }else{
-                printf("Timer stopped\n");
                 cancel_repeating_timer(&timer_0);
                 controle_led = false;
             }
@@ -55,7 +52,7 @@ int main() {
         if (g_timer_0) {
             printf("Piscou\n");
             gpio_put(LED_PIN_R, 1);
-            sleep_ms(1000);
+            sleep_ms(150);
             gpio_put(LED_PIN_R, 0);
             g_timer_0 = 0;
         }
